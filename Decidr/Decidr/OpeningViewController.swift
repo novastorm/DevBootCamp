@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  OpeningViewController.swift
 //  Decidr
 //
 //  Created by Andrew Marmion on 1/23/16.
@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class OpeningViewController: UIViewController, CLLocationManagerDelegate {
 
     
     @IBOutlet weak var beerButton: UIButton!
