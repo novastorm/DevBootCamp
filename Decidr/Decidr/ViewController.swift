@@ -12,6 +12,7 @@ import CoreLocation
 class ViewController: UIViewController, CLLocationManagerDelegate {
 
     
+    @IBOutlet weak var beerButton: UIButton!
     let locationManager = CLLocationManager()
     var currentLocation = CLLocation()
     
@@ -20,13 +21,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         navigationController?.navigationBar.barTintColor = UIColor.blackColor()
         // Do any additional setup after loading the view, typically from a nib.
     }
-
-    @IBAction func getVenue(sender: AnyObject) {
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+
+    }
+
+    @IBAction func getVenue(sender: AnyObject) {
+//        locationManager.delegate = self
+//        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+//        locationManager.requestWhenInUseAuthorization()
+//        locationManager.startUpdatingLocation()
         
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationDetailViewController") as! LocationDetailViewController
+        controller.currentLocation = currentLocation
+        self.navigationController!.pushViewController(controller, animated: true)
     }
 
 
@@ -37,9 +50,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print(currentLocation.coordinate.longitude)
         locationManager.stopUpdatingLocation()
         
-        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationDetailViewController") as! LocationDetailViewController
-        controller.currentLocation = currentLocation
-        self.navigationController!.pushViewController(controller, animated: true)
+//        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationDetailViewController") as! LocationDetailViewController
+//        controller.currentLocation = currentLocation
+//        self.navigationController!.pushViewController(controller, animated: true)
 
     }
     

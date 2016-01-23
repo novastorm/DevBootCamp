@@ -32,6 +32,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="7HB-7x-pVG"/>
+                    <connections>
+                        <outlet property="beerButton" destination="r4D-XV-wMP" id="D1a-Oi-3Gt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
