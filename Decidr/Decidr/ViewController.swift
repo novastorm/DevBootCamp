@@ -17,6 +17,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.barTintColor = UIColor.blackColor()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -25,6 +26,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+        
     }
 
 
@@ -34,6 +36,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print(currentLocation.coordinate.latitude)
         print(currentLocation.coordinate.longitude)
         locationManager.stopUpdatingLocation()
+        
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationDetailViewController") as! LocationDetailViewController
+        controller.currentLocation = currentLocation
+        self.navigationController!.pushViewController(controller, animated: true)
+
     }
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
