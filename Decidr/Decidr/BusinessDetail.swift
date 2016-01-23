@@ -15,20 +15,19 @@ struct Business {
     // MARK: Properties
     
     var name = ""
-    var distance = ""
-    var latitude = ""
-    var longitude = ""
-    var address = ""
+    var distance = 0.0
+    var latitude = 0.0
+    var longitude = 0.0
+    var address:String!
     var city = ""
-    var coordinate = [String:String]()
-    var phone = 0
+    var phone = ""
     var image_url = ""
-    var is_closed = ""
+    var is_closed = false
     var rating = 0
-    var categories = ""
+    var categories = [String]()
     
     
-    static var business = [Business]()
+    static var businessData = [Business]()
     
     
     // MARK: Initializers
@@ -36,17 +35,17 @@ struct Business {
     init(dictionary: [String : AnyObject]) {
         
         name = dictionary["name"] as! String
-        distance = dictionary["distance"] as! String
-//        latitude = dictionary["latitude"] as! String
-//        longitude = dictionary["longitude"] as! String
-        address = dictionary["address"] as! String
-        city = dictionary["city"] as! String
-        coordinate = dictionary["coordinate"] as! [String:String]
-        phone = dictionary["phone"] as! Int
+        distance = dictionary["distance"] as! Double
+        let location = dictionary["location"]
+        address = location!["address"]!![0] as! String
+        city = location!["city"] as! String
+        let coordinate = location!["coordinate"]
+        latitude = coordinate!!["latitude"] as! Double
+        longitude = coordinate!!["longitude"] as! Double
         image_url = dictionary["image_url"] as! String
-        is_closed = dictionary["is_closed"] as! String
+        is_closed = dictionary["is_closed"] as! Bool
         rating = dictionary["rating"] as! Int
-        categories = dictionary["categories"] as! String
+//        categories = dictionary["categories"] as! Array
     }
     
     static func usersFromResults(results: [[String : AnyObject]]) -> [Business] {
