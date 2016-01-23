@@ -19,7 +19,7 @@ class OpeningViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.barTintColor = UIColor.blackColor()
-        // Do any additional setup after loading the view, typically from a nib.
+        navigationController?.navigationBar.barStyle = .Black
     }
     
     override func viewWillAppear(animated: Bool) {
