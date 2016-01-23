@@ -15,6 +15,7 @@
 		2D9AA64C1C5400A900A58775 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D9AA64A1C5400A900A58775 /* LaunchScreen.storyboard */; };
 		2D9AA6571C5400A900A58775 /* DecidrTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9AA6561C5400A900A58775 /* DecidrTests.swift */; };
 		2D9AA6621C5400A900A58775 /* DecidrUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9AA6611C5400A900A58775 /* DecidrUITests.swift */; };
+		2DC143751C54195E00398844 /* LocationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC143741C54195E00398844 /* LocationDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		2D9AA65D1C5400A900A58775 /* DecidrUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DecidrUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D9AA6611C5400A900A58775 /* DecidrUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecidrUITests.swift; sourceTree = "<group>"; };
 		2D9AA6631C5400A900A58775 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2DC143741C54195E00398844 /* LocationDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			children = (
 				2D9AA63E1C5400A900A58775 /* AppDelegate.swift */,
 				2D9AA6401C5400A900A58775 /* ViewController.swift */,
+				2DC143741C54195E00398844 /* LocationDetailViewController.swift */,
 				2D9AA6421C5400A900A58775 /* Main.storyboard */,
 				2D9AA6481C5400A900A58775 /* Assets.xcassets */,
 				2D9AA64A1C5400A900A58775 /* LaunchScreen.storyboard */,
@@ -264,6 +267,7 @@
 			files = (
 				2D9AA6411C5400A900A58775 /* ViewController.swift in Sources */,
 				2D9AA63F1C5400A900A58775 /* AppDelegate.swift in Sources */,
+				2DC143751C54195E00398844 /* LocationDetailViewController.swift in Sources */,
 				2D9AA6471C5400A900A58775 /* Decidr.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -491,6 +495,7 @@
 				2D9AA6681C5400A900A58775 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2D9AA6691C5400A900A58775 /* Build configuration list for PBXNativeTarget "DecidrTests" */ = {
 			isa = XCConfigurationList;
@@ -499,6 +504,7 @@
 				2D9AA66B1C5400A900A58775 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2D9AA66C1C5400A900A58775 /* Build configuration list for PBXNativeTarget "DecidrUITests" */ = {
 			isa = XCConfigurationList;
@@ -507,6 +513,7 @@
 				2D9AA66E1C5400A900A58775 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
