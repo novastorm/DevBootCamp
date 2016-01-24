@@ -15,6 +15,9 @@ class OpeningViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var beerButton: UIButton!
     let locationManager = CLLocationManager()
     var currentLocation = CLLocation()
+    var latitude: String!
+    var longitude: String!
+    var businessResults = [Business]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,32 +35,59 @@ class OpeningViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     @IBAction func getVenue(sender: AnyObject) {
-//        locationManager.delegate = self
-//        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-//        locationManager.requestWhenInUseAuthorization()
-//        locationManager.startUpdatingLocation()
+        //show a progressview
+        getBars { (success, data, error) -> Void in
+            if success {
+                if data.count > 0 {
+                    let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationDetailViewController") as! LocationDetailViewController
+                    controller.currentLocation = self.currentLocation
+                    controller.chosenBusiness = data[0]
+                    self.navigationController!.pushViewController(controller, animated: true)
+                }
+            }
+        }
         
-        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationDetailViewController") as! LocationDetailViewController
-        controller.currentLocation = currentLocation
-        self.navigationController!.pushViewController(controller, animated: true)
+        
     }
 
 
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         currentLocation = manager.location!
         print("Update")
-        print(currentLocation.coordinate.latitude)
-        print(currentLocation.coordinate.longitude)
+        latitude = String(currentLocation.coordinate.latitude)
+        longitude = String(currentLocation.coordinate.longitude)
         locationManager.stopUpdatingLocation()
         
-//        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationDetailViewController") as! LocationDetailViewController
-//        controller.currentLocation = currentLocation
-//        self.navigationController!.pushViewController(controller, animated: true)
 
     }
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         print("Error while updating location " + error.localizedDescription)
+    }
+    
+    func getBars(completionHandler: (success: Bool, data: [Business]! ,error: String?) -> Void) {
+        YelpAPIClient().searchPlacesWithParameters(["ll": "\(latitude),\(longitude)", "category_filter": "bars", "radius_filter": "1000", "sort": "2", "limit": "1"], successSearch: { (data, response) -> Void in
+            
+            
+            let parsedResult: AnyObject!
+            do {
+                parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! NSDictionary
+            } catch {
+                parsedResult = nil
+                print("Could not parse the data as JSON \(data)")
+            }
+            guard let results = parsedResult["businesses"] as? NSArray else {
+                print("Could nor find key businessess")
+                return
+            }
+            
+            Business.businessData = Business.usersFromResults(results as! [[String : AnyObject]])
+
+            completionHandler(success: true, data: Business.businessData ,error: nil)
+            }) { (error) -> Void in
+                print(error)
+        }
+        
     }
 }
 
