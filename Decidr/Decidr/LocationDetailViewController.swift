@@ -70,7 +70,6 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        print(chosenBusiness.name)
     }
     
     func setup2() {
@@ -82,6 +81,11 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
         addPin()
         location.text = chosenBusiness.name
         firstLineLabel.text = chosenBusiness.address
+        
+        let center = calculateMidPoint(currentLocation)
+        let region = MKCoordinateRegionMake(center, MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        mapView.setRegion(region, animated: true)
+
     }
     
     func addPin() {
@@ -103,6 +107,7 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last! as CLLocation
+        currentLocation = location
         let center = calculateMidPoint(location)
         let region = MKCoordinateRegionMake(center, MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         mapView.setRegion(region, animated: true)
@@ -181,7 +186,6 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
                         let time = route.expectedTravelTime
                         self.transitTimeLabel.text = String(ceil(time/60)) + " mins"
                     })
-
                 }
             } else {
                 dispatch_async(dispatch_get_main_queue(), {
@@ -215,7 +219,6 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
     }
     
     func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer! {
-        print("redenrerForOverlay")
         if(overlay.isKindOfClass(MKPolyline)) {
             let renderer: MKPolylineRenderer = MKPolylineRenderer(overlay: overlay)
             renderer.strokeColor = UIColor.greenColor()
