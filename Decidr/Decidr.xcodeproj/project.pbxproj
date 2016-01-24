@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2D26E1A61C5442C300E7B221 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D26E1A41C5442C300E7B221 /* ViewController.swift */; };
 		2D26E1A71C5442C300E7B221 /* YelpAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D26E1A51C5442C300E7B221 /* YelpAPIClient.swift */; };
+		2D26E1AF1C545D1D00E7B221 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D26E1951C54422500E7B221 /* OAuthSwift.framework */; };
+		2D26E1B01C545D1D00E7B221 /* OAuthSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2D26E1951C54422500E7B221 /* OAuthSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2D9AA63F1C5400A900A58775 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9AA63E1C5400A900A58775 /* AppDelegate.swift */; };
 		2D9AA6411C5400A900A58775 /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9AA6401C5400A900A58775 /* OpeningViewController.swift */; };
 		2D9AA6441C5400A900A58775 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D9AA6421C5400A900A58775 /* Main.storyboard */; };
@@ -78,6 +80,13 @@
 			remoteGlobalIDString = F43502791A6791B200038A29;
 			remoteInfo = OAuthSwift;
 		};
+		2D26E1B11C545D1D00E7B221 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D26E18A1C54422400E7B221 /* OAuthSwift.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F43502791A6791B200038A29;
+			remoteInfo = OAuthSwift;
+		};
 		2D9AA6531C5400A900A58775 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2D9AA6331C5400A900A58775 /* Project object */;
@@ -93,6 +102,20 @@
 			remoteInfo = Decidr;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2D26E1B31C545D1D00E7B221 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2D26E1B01C545D1D00E7B221 /* OAuthSwift.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2D26E18A1C54422400E7B221 /* OAuthSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OAuthSwift.xcodeproj; path = "../../../Downloads/OAuthSwift-master/OAuthSwift.xcodeproj"; sourceTree = "<group>"; };
@@ -121,6 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D26E1AF1C545D1D00E7B221 /* OAuthSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,11 +246,13 @@
 				2D9AA6371C5400A900A58775 /* Sources */,
 				2D9AA6381C5400A900A58775 /* Frameworks */,
 				2D9AA6391C5400A900A58775 /* Resources */,
+				2D26E1B31C545D1D00E7B221 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				2D26E1A31C54426800E7B221 /* PBXTargetDependency */,
+				2D26E1B21C545D1D00E7B221 /* PBXTargetDependency */,
 			);
 			name = Decidr;
 			productName = Decidr;
@@ -439,6 +465,11 @@
 			name = OAuthSwift;
 			targetProxy = 2D26E1A21C54426800E7B221 /* PBXContainerItemProxy */;
 		};
+		2D26E1B21C545D1D00E7B221 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = OAuthSwift;
+			targetProxy = 2D26E1B11C545D1D00E7B221 /* PBXContainerItemProxy */;
+		};
 		2D9AA6541C5400A900A58775 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2D9AA63A1C5400A900A58775 /* Decidr */;
@@ -558,6 +589,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Decidr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jumpsaildive.Decidr;
@@ -569,6 +601,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Decidr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jumpsaildive.Decidr;

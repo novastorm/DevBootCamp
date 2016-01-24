@@ -22,6 +22,8 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
     let locationManager = CLLocationManager()
     var destination: MKMapItem!
     
+    @IBOutlet weak var firstLineLabel: UILabel!
+    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var location: UILabel!
     var currentLocation = CLLocation()
@@ -32,7 +34,7 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
         
         latitude = currentLocation.coordinate.latitude
         longitude = currentLocation.coordinate.longitude
-        location.text = chosenBusiness.name
+        
         setup()
     }
     
@@ -50,6 +52,9 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
         mapView.delegate = self
         addPin()
         getDirections()
+        location.text = chosenBusiness.name
+        firstLineLabel.text = chosenBusiness.address
+        
         
     }
     
@@ -111,30 +116,30 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
     }
     
     func getDirections() {
-        var request: MKDirectionsRequest = MKDirectionsRequest()
+        let request: MKDirectionsRequest = MKDirectionsRequest()
         let destination = placemark(chosenBusiness.latitude, longitude: chosenBusiness.longitude)
         request.source = MKMapItem.mapItemForCurrentLocation()
         request.destination = destination
-        request.transportType = MKDirectionsTransportType.Any
-        request.requestsAlternateRoutes = true
+        request.transportType = MKDirectionsTransportType.Walking
+        request.requestsAlternateRoutes = false
         
-        var directions: MKDirections = MKDirections(request: request)
+        let directions: MKDirections = MKDirections(request: request)
         
         directions.calculateDirectionsWithCompletionHandler() {
             (response, error) in
             if(error == nil && response != nil) {
                 for route in response!.routes {
-                    var r: MKRoute = route as! MKRoute
+                    let r: MKRoute = route
                     self.mapView.addOverlay(r.polyline, level: MKOverlayLevel.AboveRoads)
                 }
             }
         }
     }
     
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer! {
         print("redenrerForOverlay")
         if(overlay.isKindOfClass(MKPolyline)) {
-            var renderer: MKPolylineRenderer = MKPolylineRenderer(overlay: overlay)
+            let renderer: MKPolylineRenderer = MKPolylineRenderer(overlay: overlay)
             renderer.strokeColor = UIColor.greenColor()
             renderer.lineWidth = 5
             return renderer
