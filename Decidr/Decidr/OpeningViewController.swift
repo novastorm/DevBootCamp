@@ -40,10 +40,11 @@ class OpeningViewController: UIViewController, CLLocationManagerDelegate {
         getBars { (success, data, error) -> Void in
             if success {
                 if data.count > 0 {
-                    let businesses = data.shuffle()
+//                    let businesses = data.shuffle()
                     let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationDetailViewController") as! LocationDetailViewController
                     controller.currentLocation = self.currentLocation
-                    controller.chosenBusiness = businesses[0]
+//                    controller.chosenBusiness = businesses[0]
+                    controller.businessResults = data
                     self.navigationController!.pushViewController(controller, animated: true)
                 }
             }

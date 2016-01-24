@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import MapKit
 import CoreLocation
+import AudioToolbox
 
 class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate
 {
@@ -21,6 +22,7 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
     let regionRadius: CLLocationDistance = 20000
     let locationManager = CLLocationManager()
     var destination: MKMapItem!
+    var count: Int = 0
     
     @IBOutlet weak var firstLineLabel: UILabel!
     
@@ -36,18 +38,12 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        latitude = currentLocation.coordinate.latitude
-        longitude = currentLocation.coordinate.longitude
-        
         setup()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+        setup2()
     }
     
     
@@ -64,12 +60,26 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
     }
     
     func setup() {
+        businessResults.shuffle()
+        latitude = currentLocation.coordinate.latitude
+        longitude = currentLocation.coordinate.longitude
+        chosenBusiness = businessResults[0]
         mapView.showsUserLocation = true
         mapView.delegate = self
-        addPin()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        print(chosenBusiness.name)
+    }
+    
+    func setup2() {
         getWalkingDirections()
         getCarDirections()
         getTransitDirections()
+        mapView.removeAnnotations(self.mapView.annotations)
+        mapView.removeOverlays(self.mapView.overlays)
+        addPin()
         location.text = chosenBusiness.name
         firstLineLabel.text = chosenBusiness.address
     }
@@ -142,12 +152,11 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
             (response, error) in
             if(error == nil && response != nil) {
                 for route in response!.routes {
-                    print(route.transportType)
-                    print(route.expectedTravelTime)
                     dispatch_async(dispatch_get_main_queue(), {
                     let r: MKRoute = route
                     self.mapView.addOverlay(r.polyline, level: MKOverlayLevel.AboveRoads)
-                    self.walkingTimeLabel.text = String(route.expectedTravelTime)
+                        let time = route.expectedTravelTime
+                    self.walkingTimeLabel.text = String(ceil(time/60)) + " mins"
                     })
                 }
             }
@@ -168,10 +177,9 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
             (response, error) in
             if(error == nil && response != nil) {
                 for route in response!.routes {
-                    print(route.transportType)
-                    print(route.expectedTravelTime)
                     dispatch_async(dispatch_get_main_queue(), {
-                        self.transitTimeLabel.text = String(route.expectedTravelTime)
+                        let time = route.expectedTravelTime
+                        self.transitTimeLabel.text = String(ceil(time/60)) + " mins"
                     })
 
                 }
@@ -197,10 +205,9 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
             (response, error) in
             if(error == nil && response != nil) {
                 for route in response!.routes {
-                    print(route.transportType)
-                    print(route.expectedTravelTime)
                     dispatch_async(dispatch_get_main_queue(), {
-                        self.carTravelTime.text = String(route.expectedTravelTime)
+                        let time = route.expectedTravelTime
+                        self.carTravelTime.text = String(ceil(time/60)) + " mins"
                     })
                 }
             }
@@ -217,4 +224,48 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
         }
         return nil
     }
+    
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
+        if motion == .MotionShake {
+            
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+            if self.count == self.businessResults.count {
+                self.count = 0
+            } else {
+                self.count += 1
+            }
+            
+            self.chosenBusiness = self.businessResults[self.count]
+            self.setup2()
+
+//            // This adds vibration when the app alerts the user
+//
+//            // Make the alert
+//            let alert = UIAlertController(title: "You shook me!", message:"The phone has deteted that you are a shaker.", preferredStyle: .Alert)
+//            let action = UIAlertAction(title: "OK", style: .Default) { _ in
+//                // Put here any code that you would like to execute when
+//                // the user taps that OK button (may be empty in your case if that's just
+//                // an informative alert)"
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    if self.count == self.businessResults.count {
+//                        self.count = 0
+//                    } else {
+//                        self.count += 1
+//                    }
+//
+//                self.chosenBusiness = self.businessResults[self.count]
+//                self.setup2()
+//                })
+//            }
+//            alert.addAction(action)
+//            self.presentViewController(alert, animated: true){}
+//            
+        }
+        
+    }
+
 }
