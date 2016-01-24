@@ -24,6 +24,11 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
     
     @IBOutlet weak var firstLineLabel: UILabel!
     
+    @IBOutlet weak var walkingTimeLabel: UILabel!
+    @IBOutlet weak var transitTimeLabel: UILabel!
+    @IBOutlet weak var carTravelTime: UILabel!
+    
+    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var location: UILabel!
     var currentLocation = CLLocation()
@@ -31,7 +36,6 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
         latitude = currentLocation.coordinate.latitude
         longitude = currentLocation.coordinate.longitude
         
@@ -44,18 +48,30 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-       
+    }
+    
+    
+    @IBAction func walkingDirections(sender: UIButton) {
+        print("getting walking directions")
+    }
+    
+    @IBAction func transitDirections(sender: UIButton) {
+        print("geting transit directions")
+    }
+    
+    @IBAction func carDirections(sender: UIButton) {
+        print("geting car directions")
     }
     
     func setup() {
         mapView.showsUserLocation = true
         mapView.delegate = self
         addPin()
-        getDirections()
+        getWalkingDirections()
+        getCarDirections()
+        getTransitDirections()
         location.text = chosenBusiness.name
         firstLineLabel.text = chosenBusiness.address
-        
-        
     }
     
     func addPin() {
@@ -77,9 +93,6 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last! as CLLocation
-    
-        
-//        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let center = calculateMidPoint(location)
         let region = MKCoordinateRegionMake(center, MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         mapView.setRegion(region, animated: true)
@@ -115,12 +128,38 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
         return mapItem
     }
     
-    func getDirections() {
+    func getWalkingDirections() {
         let request: MKDirectionsRequest = MKDirectionsRequest()
         let destination = placemark(chosenBusiness.latitude, longitude: chosenBusiness.longitude)
         request.source = MKMapItem.mapItemForCurrentLocation()
         request.destination = destination
         request.transportType = MKDirectionsTransportType.Walking
+        request.requestsAlternateRoutes = true
+        
+        let directions: MKDirections = MKDirections(request: request)
+        
+        directions.calculateDirectionsWithCompletionHandler() {
+            (response, error) in
+            if(error == nil && response != nil) {
+                for route in response!.routes {
+                    print(route.transportType)
+                    print(route.expectedTravelTime)
+                    dispatch_async(dispatch_get_main_queue(), {
+                    let r: MKRoute = route
+                    self.mapView.addOverlay(r.polyline, level: MKOverlayLevel.AboveRoads)
+                    self.walkingTimeLabel.text = String(route.expectedTravelTime)
+                    })
+                }
+            }
+        }
+    }
+    
+    func getTransitDirections() {
+        let request: MKDirectionsRequest = MKDirectionsRequest()
+        let destination = placemark(chosenBusiness.latitude, longitude: chosenBusiness.longitude)
+        request.source = MKMapItem.mapItemForCurrentLocation()
+        request.destination = destination
+        request.transportType = MKDirectionsTransportType.Transit
         request.requestsAlternateRoutes = false
         
         let directions: MKDirections = MKDirections(request: request)
@@ -129,8 +168,40 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
             (response, error) in
             if(error == nil && response != nil) {
                 for route in response!.routes {
-                    let r: MKRoute = route
-                    self.mapView.addOverlay(r.polyline, level: MKOverlayLevel.AboveRoads)
+                    print(route.transportType)
+                    print(route.expectedTravelTime)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.transitTimeLabel.text = String(route.expectedTravelTime)
+                    })
+
+                }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.transitTimeLabel.text = "- -"
+                })
+            }
+        }
+    }
+    
+    func getCarDirections() {
+        let request: MKDirectionsRequest = MKDirectionsRequest()
+        let destination = placemark(chosenBusiness.latitude, longitude: chosenBusiness.longitude)
+        request.source = MKMapItem.mapItemForCurrentLocation()
+        request.destination = destination
+        request.transportType = MKDirectionsTransportType.Automobile
+        request.requestsAlternateRoutes = false
+        
+        let directions: MKDirections = MKDirections(request: request)
+        
+        directions.calculateDirectionsWithCompletionHandler() {
+            (response, error) in
+            if(error == nil && response != nil) {
+                for route in response!.routes {
+                    print(route.transportType)
+                    print(route.expectedTravelTime)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.carTravelTime.text = String(route.expectedTravelTime)
+                    })
                 }
             }
         }
@@ -146,17 +217,4 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate, CLLocat
         }
         return nil
     }
-    
-//    func mapView(mapView: MKMapView!, viewForOverlay overlay: MKOverlay!) -> MKOverlayView! {
-//        print("ViewForOverlay")
-//        if (overlay.isKindOfClass(MKPolyline)) {
-//            let lineView: MKPolylineView = MKPolylineView(overlay: overlay)
-//            lineView.backgroundColor = UIColor.greenColor()
-//            
-//            return lineView;
-//        }
-//        return nil;
-//    }
-    
-    
 }

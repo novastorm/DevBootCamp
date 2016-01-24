@@ -23,6 +23,7 @@ class OpeningViewController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         navigationController?.navigationBar.barTintColor = UIColor.blackColor()
         navigationController?.navigationBar.barStyle = .Black
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -39,9 +40,10 @@ class OpeningViewController: UIViewController, CLLocationManagerDelegate {
         getBars { (success, data, error) -> Void in
             if success {
                 if data.count > 0 {
+                    let businesses = data.shuffle()
                     let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationDetailViewController") as! LocationDetailViewController
                     controller.currentLocation = self.currentLocation
-                    controller.chosenBusiness = data[0]
+                    controller.chosenBusiness = businesses[0]
                     self.navigationController!.pushViewController(controller, animated: true)
                 }
             }
@@ -66,7 +68,7 @@ class OpeningViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func getBars(completionHandler: (success: Bool, data: [Business]! ,error: String?) -> Void) {
-        YelpAPIClient().searchPlacesWithParameters(["ll": "\(latitude),\(longitude)", "category_filter": "bars", "radius_filter": "1000", "sort": "2", "limit": "1"], successSearch: { (data, response) -> Void in
+        YelpAPIClient().searchPlacesWithParameters(["ll": "\(latitude),\(longitude)", "category_filter": "bars", "radius_filter": "1000", "sort": "1", "limit": "10"], successSearch: { (data, response) -> Void in
             
             
             let parsedResult: AnyObject!

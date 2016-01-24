@@ -74,6 +74,9 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mIf-ne-aUD">
                                                 <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
                                                 <state key="normal" image="pedestrian"/>
+                                                <connections>
+                                                    <action selector="walkingDirections:" destination="vLv-8J-juR" eventType="touchUpInside" id="Lkn-we-CYR"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCi-cP-eGz">
                                                 <rect key="frame" x="0.0" y="42" width="42" height="20"/>
@@ -89,6 +92,9 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmr-iB-1eq">
                                                 <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
                                                 <state key="normal" image="transit"/>
+                                                <connections>
+                                                    <action selector="transitDirections:" destination="vLv-8J-juR" eventType="touchUpInside" id="Qkh-fe-4mK"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YxI-Gm-uOg">
                                                 <rect key="frame" x="0.0" y="42" width="42" height="20"/>
@@ -104,6 +110,9 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0MM-5F-uFH">
                                                 <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
                                                 <state key="normal" image="car"/>
+                                                <connections>
+                                                    <action selector="carDirections:" destination="vLv-8J-juR" eventType="touchUpInside" id="f8B-yq-Yjp"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PBq-3N-aBQ">
                                                 <rect key="frame" x="0.0" y="42" width="42" height="20"/>
@@ -125,7 +134,7 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="lmf-L7-hoA" secondAttribute="trailing" constant="20" id="6pE-7H-q7F"/>
-                            <constraint firstItem="4Pk-QG-SJZ" firstAttribute="top" secondItem="lmf-L7-hoA" secondAttribute="bottom" constant="50" id="8Jl-zj-zbe"/>
+                            <constraint firstItem="4Pk-QG-SJZ" firstAttribute="top" secondItem="lmf-L7-hoA" secondAttribute="bottom" constant="110" id="8Jl-zj-zbe"/>
                             <constraint firstItem="qNa-9W-WA2" firstAttribute="top" secondItem="l6Q-TU-YpW" secondAttribute="bottom" constant="8" id="If0-T3-g0Y"/>
                             <constraint firstItem="l6Q-TU-YpW" firstAttribute="centerX" secondItem="nKJ-Gd-VXw" secondAttribute="centerX" id="QxS-qn-cHm"/>
                             <constraint firstItem="lmf-L7-hoA" firstAttribute="top" secondItem="qNa-9W-WA2" secondAttribute="bottom" constant="20" id="SyT-Mm-4MP"/>
@@ -139,9 +148,12 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="carTravelTime" destination="PBq-3N-aBQ" id="NVe-zC-1iI"/>
                         <outlet property="firstLineLabel" destination="qNa-9W-WA2" id="KLG-NA-EoC"/>
                         <outlet property="location" destination="l6Q-TU-YpW" id="dqM-W4-Per"/>
                         <outlet property="mapView" destination="4Pk-QG-SJZ" id="2CA-VZ-JV9"/>
+                        <outlet property="transitTimeLabel" destination="YxI-Gm-uOg" id="BKo-5v-dtg"/>
+                        <outlet property="walkingTimeLabel" destination="fCi-cP-eGz" id="lCI-jK-tqn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H2X-PZ-f7x" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -153,9 +165,10 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2yb-K5-HBW" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mdD-lv-7n9">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="mdD-lv-7n9">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
